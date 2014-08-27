@@ -1,0 +1,29 @@
+@CHARSET "ISO-8859-1";
+*{
+	margin: 0px;
+	padding: 0px;
+}
+
+body {
+  padding-top: 70px
+}
+
+.ibody{
+	margin: auto;
+	width: 90%;
+	max-width: 500px;	
+}
+.jumbotron {
+	padding: 16px;
+}
+.jumbotron h1{
+	font-size: 32px;
+	text-align: center;
+}
+.iformulario{
+	padding: 14px;
+}
+
+.parrafo{
+	font-size: small;	
+}
