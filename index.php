@@ -49,29 +49,76 @@
                         </div>  
                     </div>
 
-                    <div class="col-md-4">          
-                        <div class="form-group">
-                            <label for="ciudad">Ciudad</label>
-                            <select id="ciudad" name="ciudad" class="form-control"
-                                    value="<?php echo isset($_POST['ciudad']) ? $_POST['ciudad'] : '' ?>">
-                                <option>Choloma</option>
-                                <option>La Ceiba</option>
-                                <option>San Pedro Sula</option>
-                                <option>Tegucigalpa</option>
-                                <option>Villanueva, Honduras</option>
-                            </select>
-                        </div>
-                    </div>
-
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="pais">Pais</label>
-                            <select id="pais" name="pais" class="form-control"
-                                    value="<?php echo isset($_POST['pais']) ? $_POST['pais'] : '' ?>">
-                                <option>Honduras</option>		        
-                            </select>
+                            <?php
+                            $paises = array(
+                                "Argentina",
+                                "Bolivia",
+                                "Brasil",
+                                "Chile",
+                                "Colombia",
+                                "Costa Rica",
+                                "Cuba",
+                                "Curazao",
+                                "Dominica",
+                                "Ecuador",
+                                "El Salvador",
+                                "España",
+                                "Guatemala",
+                                "Guayana Francesa",
+                                "Guyana",
+                                "Haití",
+                                "Honduras",
+                                "Islas Malvinas",
+                                "México",
+                                "Panamá",
+                                "Paraguay",
+                                "Perú",
+                                "Puerto Rico",
+                                "República de Nicaragua",
+                                "República Dominicana",
+                                "San Martín",
+                                "Surinam",
+                                "Trinidad y Tobago",
+                                "Uruguay",
+                                "Venezuela"
+                            );
+
+                            $listPaises = '<select id="pais" name="pais" class="form-control" onchange="fbuscar.submit();">';
+                            
+                            $paisSel = isset($_POST['pais']) ? $_POST['pais'] : '';
+                            
+                            foreach ($paises as $value) {
+                                $listPaises = $listPaises
+                                        .'<option value="'.htmlentities($value).'"'.($paisSel == $value ? ' selected' : ''). '>'
+                                            .htmlentities($value)
+                                        .'</option>';
+                            }
+                            
+                            $listPaises = $listPaises.'</select>';
+                            
+                            echo $listPaises;                                                                  		        
+                                
+                            ?>
                         </div>		            		            		          
                     </div>
+
+                    <div class="col-md-4">          
+                        <div class="form-group">
+                            <label for="ciudad">Ciudad</label>
+                            <?php
+                            echo '<select id="ciudad" name="ciudad" class="form-control">
+                                        <option>Choloma</option>
+                                        <option>La Ceiba</option>
+                                        <option>San Pedro Sula</option>
+                                        <option>Tegucigalpa</option>
+                                        <option>Villanueva</option>
+                                    </select>';
+                            ?>
+                        </div>
+                    </div>                    
                 </div>
 
                 <?php
@@ -81,30 +128,31 @@
                     $busqueda = htmlentities($_POST['busqueda']);
                     $pais = htmlentities($_POST['pais']);
                     $ciudad = htmlentities($_POST['ciudad']);
-                    
-                    $params = array(':buscar' => '%'.$busqueda.'%', ':pais' => $pais, ':ciudad' => $ciudad);
 
-                    $query = "SELECT * FROM companias
-			where Compania like :buscar and Pais = :pais and Ciudad = :ciudad
+                    $params = array(':buscar' => '%' . $busqueda . '%', ':pais' => $pais, ':ciudad' => $ciudad);
+
+                    $query = "SELECT * FROM companias where CONCAT(Pais, Ciudad, Compania) IN
+                        (SELECT distinct CONCAT(Pais, Ciudad, Compania) from productos 
+			where (Compania like :buscar or Descripcion like :buscar) and Pais = :pais and Ciudad = :ciudad)
 			order by Compania";
 
                     $stmt = $pdo->prepare($query);
                     $stmt->execute($params);
 
                     $result = $stmt->fetchAll(PDO::FETCH_OBJ);
-                    
+
                     $val = '<div id="resultado">';
-                    
+
                     $paneles = '<div class="row">';
-                    
+
                     $i = 1;
-                    
+
                     foreach ($result as $value) {
-                        $val = $val.'                            
+                        $val = $val . '                            
                                 <div class="col-md-4">
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
-                                            <h3 class="panel-title">Smart Solutions</h3>
+                                            <h3 class="panel-title">' . $value->Compania . '</h3>
                                         </div>
                                         <div class="panel-body">
                                             <table >
@@ -114,36 +162,36 @@
                                                             <img style="max-height: 100%; max-width: 100%" src="http://localhost:8080/adondehay/logos/wguerraoutlook.com/Honduras/San Pedro Sula/Smart Solutions/Mi Foto.jpg" alt="...">
                                                         </div>
                                                     </td>
-                                                    <td><p><strong>Direcci&oacute;n:</strong> Residencial Real del Puente, Casa F25 Etapa II, Villanueva, Cortes</p></td>
+                                                    <td><p><strong>&nbsp;Direcci&oacute;n: </strong>' . $value->Direccion . '</p></td>
                                                     <td style="width: 5px"></td>
 
                                                 </tr>
                                                 <tr >										
-                                                    <td><p><strong>Tel:</strong> 2670-1529</p></td>
+                                                    <td><p><strong>&nbsp;Tel: </strong>' . $value->Telefono . '</p></td>
                                                     <td style="width: 5px"></td>
                                                 </tr>
                                             </table>															
-                                            <p><strong>Correo: </strong>lcontreras@smartsolutions.hn</p>								
-                                            <p><strong>Sitio Web: </strong><a href="http://www.smartsolutions.hn">www.smartsolutions.hn</a></p>
+                                            <p><strong>Correo: </strong>' . $value->Correo . '</p>								
+                                            <p><strong>Sitio Web: </strong><a href="' . $value->SitioWeb . '">' . $value->SitioWeb . '</a></p>
                                         </div>
 
                                     </div>
                                 </div>';
-                            
-                        
-                        if($i % 3 == 0){
-                           $paneles = $paneles.'</div>' ;  
-                           
-                           $val = $val.$paneles;
-                           
-                           $paneles = '<div class="row">';
+
+
+                        if ($i % 3 == 0) {
+                            $paneles = $paneles . '</div>';
+
+                            $val = $val . $paneles;
+
+                            $paneles = '<div class="row">';
                         }
-                        
+
                         $i++;
-                    } 
-                    
-                    $val = $val.'</div>';
-                    
+                    }
+
+                    $val = $val . '</div>';
+
                     echo $val;
                 }
                 ?>
