@@ -34,19 +34,13 @@
   					<div class="row">
   						<div class="col-md-4"> 
 							<div class="form-group">
-					  			<select class="form-control" id="pais" name="pais">
-								  <option>Honduras</option>				  
+					  			<select class="form-control" id="pais" name="pais">								  			  
 								</select>
 							</div>						
 						</div>
 						<div class="col-md-4">
 							<div class="form-group">
-								<select class="form-control" id="ciudad" name="ciudad">
-					          		<option>Choloma</option>
-					          		<option>La Ceiba</option>
-								  	<option>San Pedro Sula</option>				  
-								  	<option>Tegucigalpa</option>
-								  	<option>Villanueva</option>
+								<select class="form-control" id="ciudad" name="ciudad" onchange="cambioPais();">					          		
 								</select>
 							</div>
 						</div>
@@ -186,7 +180,39 @@
 	</div>
 	
 	<script type="text/javascript">
-	
+            $.ajax({
+                type: 'POST',
+                url: 'php/getPaises.php',                                
+            }).done(function(response) {                                                  
+                var j = jQuery.parseJSON(response);                                
+
+                $.each(j.data, function(i, val) {
+                    $('#pais').append(new Option(val.pais, val.pais));
+                 });
+                 
+                 cambioPais();
+            }
+            );
+        
+            function cambioPais(){                                       
+              var pais = $('#pais').val();
+
+                  $.ajax({
+                          type: 'POST',
+                          url: 'php/getCiudades.php?pais=' + pais,                                
+                      }).done(function(response) {                                  
+
+                          $(ciudad).empty();
+
+                          var j = jQuery.parseJSON(response);                                
+
+                          $.each(j.data, function(i, val) {
+                              $('#ciudad').append(new Option(val.ciudad, val.ciudad));
+                           });                                
+                      }
+                      );
+              }
+
 		var totalProductos = 0;
 				
 		function filtrar(){

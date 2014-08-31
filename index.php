@@ -18,6 +18,7 @@
         <script src="js/jquery.validate.min.js"></script> 
         <script src="js/bootstrap.js"></script>  
         <script src="js/holder.js"></script> 
+        <script language="Javascript" src="http://www.codehelper.io/api/ips/?js"></script>
     </head>
     <body>
 
@@ -85,13 +86,11 @@
                                 "Venezuela"
                             );
 
-                            $listPaises = '<select id="pais" name="pais" class="form-control" onchange="fbuscar.submit();">';
-
-                            $paisSel = isset($_POST['pais']) ? $_POST['pais'] : '';
+                            $listPaises = '<select id="pais" name="pais" class="form-control" onchange="cambioPais();">';                            
 
                             foreach ($paises as $value) {
                                 $listPaises = $listPaises
-                                        . '<option value="' . htmlentities($value) . '"' . ($paisSel == $value ? ' selected' : '') . '>'
+                                        . '<option value="' . htmlentities($value) . '">'
                                         . htmlentities($value)
                                         . '</option>';
                             }
@@ -106,13 +105,8 @@
                     <div class="col-md-4">          
                         <div class="form-group">
                             <label for="ciudad">Ciudad</label>
-                            <select id="ciudad" name="ciudad" class="form-control">
-                                <option>Choloma</option>
-                                <option>La Ceiba</option>
-                                <option>San Pedro Sula</option>
-                                <option>Tegucigalpa</option>
-                                <option>Villanueva</option>
-                            </select>;                            
+                            <select id="ciudad" name="ciudad" class="form-control">                                
+                            </select>                            
                         </div>
                     </div>                    
                 </div>
@@ -122,8 +116,33 @@
 
             </form>
 
-            <script type="text/javascript">
+            <script type="text/javascript">                                                             
+                
+                $('#pais').val(codehelper_ip.CountryName);
+                
+                cambioPais();
+                
+                function cambioPais(){                                       
+                    var pais = $('#pais').val();
+                    
+                    $.ajax({
+                                type: 'POST',
+                                url: 'php/getCiudades.php?pais=' + pais,                                
+                            }).done(function(response) {                                  
+                                
+                                $(ciudad).empty();
+                                                                
+                                var j = jQuery.parseJSON(response);                                
+                                
+                                $.each(j.data, function(i, val) {
+                                    $('#ciudad').append(new Option(val.ciudad, val.ciudad));
+                                 });                                
+                                                                  
+                                 $('#ciudad').val(codehelper_ip.CityName);
+                            }
+                            );
 
+                }
                 $(document).ready(function() {
                     $('form').submit(function(event) {
                         var isvalidate = $('form').valid();
@@ -135,11 +154,12 @@
                                 type: 'POST',
                                 url: 'php/Buscar.php',
                                 data: $(this).serialize()
-                            }).done(function(response) {
-                                $('#resultado').html("");                               
+                            }).done(function(response) {                                
+                                
                                 var j = jQuery.parseJSON(response);
 
-                                var fila = '<div class="row">';
+                                var resultado = '';
+                                var fila = '<div class="row">';                                                                
                                 
                                 for (var i = 0; i < j.data.length; i++) {
                                     var panel = '<div class="col-md-4">';
@@ -164,21 +184,26 @@
                                         panel +=                 '</tr>';
                                         panel +=             '</table>';
                                         panel +=             '<p><strong>Correo: </strong>' + j.data[i].Correo + '</p>';
-                                        panel +=             '<p><strong>Sitio Web: </strong><a href="' + j.data[i].SitioWeb + '">' + j.data[i].SitioWeb + '</a></p>';
+                                        panel +=             '<p><strong>Sitio Web: </strong><a href="' + (j.data[i].SitioWeb  || '') + '">' + (j.data[i].SitioWeb || '') + '</a></p>';
                                         panel +=         '</div>';
                                         panel +=       '</div>';
                                         panel +=     '</div>';
                                 
-                                fila += panel;
-
-                                if ((i + 1) % 3 === 0) {
-                                    fila += '</div>';                            
-
-                                    $('#resultado').html(fila);
-
+                                fila += panel; 
+                                
+                                if((i + 1) % 3 == 0){
+                                    fila += '</div>';
+                                    resultado += fila;
                                     fila = '<div class="row">';
                                 }
-                               }
+                               }                                                                                    
+                               
+                               if((j.data.length) % 3 != 0){
+                                    fila += '</div>';
+                                    resultado += fila;
+                                }
+                                    
+                               $('#resultado').html(resultado);
                             }
                             );
 
