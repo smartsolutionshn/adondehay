@@ -1,6 +1,6 @@
 <html lang="en">
   <head>
-    <meta charset="utf-8">
+    <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="Adonde Hay" content="">
     <meta name="Smart Solutions" content="">
@@ -15,10 +15,13 @@
     
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery.validate.min.js"></script>    
-	<script src="js/bootstrap.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script language="Javascript" src="http://www.codehelper.io/api/ips/?js"></script>
   </head>
 
   <body>
+      <?php include 'php/menu.php';?>
+      
     <div class="ibody">
  	<form method="POST" name="fregistrarme" id="fregistrarme" action="registrarme.php">
 			          	            	                      	          	          	          
@@ -29,20 +32,14 @@
 	          	<div class="row">
 	          		<div class="col-md-6">        	         	          
 			          <div class="form-group">
-			          	<select class="form-control" id="pais" name="pais">
-						  <option>Honduras</option>				  
-						</select>
+                                      <select class="form-control" id="pais" name="pais" onchange="cambioPais();">						  			  
+					</select>
 			          </div>
 			        </div>
 			        <div class="col-md-6">
 			          <div class="form-group">
-			          	<select class="form-control" id="ciudad" name="ciudad">
-			          		<option>Choloma</option>
-			          		<option>La Ceiba</option>
-						  	<option>San Pedro Sula</option>				  
-						  	<option>Tegucigalpa</option>
-						  	<option>Villanueva</option>
-						</select>
+			          	<select class="form-control" id="ciudad" name="ciudad">			          		
+					</select>
 			          </div>
 			        </div>
 		          </div>
@@ -82,7 +79,43 @@
 	</form>
   </div>
   
-  <script type="text/javascript">
+  <script type="text/javascript">                  
+      $.ajax({
+                type: 'POST',
+                url: 'php/getPaises.php',                                
+            }).done(function(response) {                                                  
+                var j = jQuery.parseJSON(response);                                
+
+                $.each(j.data, function(i, val) {
+                    $('#pais').append(new Option(val.pais, val.pais));
+                 });                                
+                 
+                 $('#pais').val(codehelper_ip.CountryName);
+                 
+                 cambioPais();
+            }
+            );
+        
+      function cambioPais(){                                       
+        var pais = $('#pais').val();
+            
+            $.ajax({
+                    type: 'POST',
+                    url: 'php/getCiudades.php?pais=' + pais,                                
+                }).done(function(response) {                                  
+
+                    $(ciudad).empty();
+
+                    var j = jQuery.parseJSON(response);                                
+
+                    $.each(j.data, function(i, val) {
+                        $('#ciudad').append(new Option(val.ciudad, val.ciudad));
+                     });                                
+                     
+                     $('#ciudad').val(codehelper_ip.CityName);
+                }
+                );
+        }
 	$(document).ready(function() {
 	  $('form').validate(
 	  {		  
