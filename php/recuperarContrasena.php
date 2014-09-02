@@ -35,8 +35,8 @@ if($user = $stmt->fetch(PDO::FETCH_LAZY))
 	$mail->Subject = utf8_encode("Recuperar contraseña");
 	$mail->isHtml(true);
 	$mail->Body = '<BR><BR>Haga clic en el siguiente hipervinculo para cambiar su contrase&ntilde;a<br><br>'.
-				  '<a href="'.$actual_link.'/adondehay/cambiar_contrasena.html?clave='.$clave.'&correo='.$usuario.'">'.
-				  $actual_link.'/cambiar_contrasena.html?clave='.$clave.'&correo='.$usuario.'</a>';
+				  '<a href="'.$actual_link.'/cambiar_contrasena.php?clave='.$clave.'&correo='.$usuario.'">'.
+				  $actual_link.'/cambiar_contrasena.php?clave='.$clave.'&correo='.$usuario.'</a>';
 
 	$mail->send();
 		
