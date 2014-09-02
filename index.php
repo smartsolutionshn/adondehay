@@ -195,8 +195,15 @@
                                         panel +=            '<table >';
                                         panel +=                '<tr >';
                                         panel +=                    '<td style="border: 0px ; width: 30%" rowspan="2">';
-                                        panel +=                        '<div style="height: 85px;">';
-                                        //panel +=                             '<img style="max-height: 100%; max-width: 100%" src="http://localhost:8080/adondehay/logos/wguerraoutlook.com/Honduras/San Pedro Sula/Smart Solutions/Mi Foto.jpg" alt="...">';
+                                        panel +=                        '<div style="height: 85px;">';                                        
+                                        
+                                        //if(j.data[i].Logo != null){
+                                            //panel +=                             '<img style="max-height: 100%; max-width: 100%" src="' + j.data[i].Logo + '" alt="...">';
+                                        //}
+                                        //else{                                            
+                                            panel +=                             '<img style="max-height: 100%; max-width: 100%" src="logos/logo.png" alt="...">';
+                                        //}
+                                        
                                         panel +=                        '</div>';
                                         panel +=                    '</td>';
                                         panel +=                    '<td><p><strong>&nbsp;Direcci&oacute;n: </strong>' + j.data[i].Direccion + '</p></td>';
