@@ -112,6 +112,15 @@
                 </div>
 
                 <div id="resultado">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="jumbotron">	                                
+                                <p>Empresario, registra tu compa&ntilde;ia totalmente <strong>gratis</strong> en la red de negocios del mundo.</p>
+                                <a href="registrarme.php" class="btn btn-primary">
+                                    Registrarme Gratis</a>                            
+                            </div>
+                        </div>
+                    </div>
                 </div>                
 
             </form>
@@ -172,7 +181,7 @@
                                         panel +=                '<tr >';
                                         panel +=                    '<td style="border: 0px ; width: 30%" rowspan="2">';
                                         panel +=                        '<div style="height: 85px;">';
-                                        panel +=                             '<img style="max-height: 100%; max-width: 100%" src="http://localhost:8080/adondehay/logos/wguerraoutlook.com/Honduras/San Pedro Sula/Smart Solutions/Mi Foto.jpg" alt="...">';
+                                        //panel +=                             '<img style="max-height: 100%; max-width: 100%" src="http://localhost:8080/adondehay/logos/wguerraoutlook.com/Honduras/San Pedro Sula/Smart Solutions/Mi Foto.jpg" alt="...">';
                                         panel +=                        '</div>';
                                         panel +=                    '</td>';
                                         panel +=                    '<td><p><strong>&nbsp;Direcci&oacute;n: </strong>' + j.data[i].Direccion + '</p></td>';
