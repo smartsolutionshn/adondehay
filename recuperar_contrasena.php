@@ -73,10 +73,10 @@
 					  url: 'php/recuperarContrasena.php',
 					  data: $(this).serialize(),
 				  }).done(function(data){					  
-					  if(data == 'Ok')
+					  if(data === 'Ok')
 					  {						  
 						  $("#respuesta").slideDown();
-						  $("#respuesta").html('<div class="alert alert-info">Revise su correo para recuperar su contraseña.</div>'); 
+						  $("#respuesta").html('<div class="alert alert-info">Revise su correo para recuperar su contrase&ntilde;a.</div>'); 
 					  }
 					  else{
 						  $("#respuesta").slideDown();
