@@ -154,7 +154,7 @@
                                 url: 'php/getCiudades.php?pais=' + pais,                                
                             }).done(function(response) {                                  
                                 
-                                $(ciudad).empty();
+                                $('#ciudad').empty();
                                                                 
                                 var j = jQuery.parseJSON(response);                                
                                 
