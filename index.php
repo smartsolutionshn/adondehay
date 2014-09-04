@@ -32,7 +32,10 @@
         <script src="js/jquery.min.js"></script>
         <script src="js/jquery.validate.min.js"></script> 
         <script src="js/bootstrap.js"></script>  
-        <script src="js/holder.js"></script> 
+        <script src="js/holder.js"></script>
+        <script src="js/jquery.cookie.js"></script>         
+        <script src="js/json2.js"></script>         
+        <script src="js/jquery.storageapi.min.js"></script> 
         <script language="Javascript" src="http://www.codehelper.io/api/ips/?js"></script>
     </head>
     <body>
@@ -120,7 +123,7 @@
                     <div class="col-md-4">          
                         <div class="form-group">
                             <label for="ciudad">Ciudad</label>
-                            <select id="ciudad" name="ciudad" class="form-control">                                
+                            <select id="ciudad" name="ciudad" class="form-control" onchange="cambioCiudad();">                                
                             </select>                            
                         </div>
                     </div>                    
@@ -141,13 +144,21 @@
             </form>
 
             <script type="text/javascript">                                                             
+                storage=$.localStorage;
                 
-                $('#pais').val(codehelper_ip.CountryName);
+                if(storage.isSet('pais') ){
+                    $('#pais').val(storage.get('pais'));
+                }else{
+                    $('#pais').val(codehelper_ip.CountryName);
+                }
+                
                 
                 cambioPais();
                 
                 function cambioPais(){                                       
                     var pais = $('#pais').val();
+                    
+                    storage.set('pais', pais);
                     
                     $.ajax({
                                 type: 'POST',
@@ -161,12 +172,23 @@
                                 $.each(j.data, function(i, val) {
                                     $('#ciudad').append(new Option(val.ciudad, val.ciudad));
                                  });                                
-                                                                  
-                                 $('#ciudad').val(codehelper_ip.CityName);
+                                     
+                                if(storage.isSet('ciudad') ){
+                                    $('#ciudad').val(storage.get('ciudad'));
+                                }else{
+                                    $('#ciudad').val(codehelper_ip.CityName);
+                                }                                 
                             }
                             );
 
                 }
+                
+                function cambioCiudad(){
+                    var ciudad = $('#ciudad').val();
+                    
+                    storage.set('ciudad', ciudad);
+                }
+                
                 $(document).ready(function() {
                     $('form').submit(function(event) {
                         var isvalidate = $('form').valid();
