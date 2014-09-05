@@ -138,12 +138,26 @@
                                     Registrarme Gratis</a>                            
                             </div>
                         </div>
+                        
+                        <div class="col-md-4">
+                            <div class="jumbotron">	                                
+                                <p>Invita a tus amigos.</p><br>                                
+                                <input type="text" class="form-control" id="correos" name="correos"
+                                       placeholder="Correos separados por coma">
+                                <button class="btn btn-primary" onclick="enviarInvitacion();">Enviar invitaci&oacute;n</button>
+                            </div>
+                        </div>
                     </div>
                 </div>                
 
             </form>
 
-            <script type="text/javascript">                                                             
+            <script type="text/javascript">   
+                function enviarInvitacion()
+                {
+                    
+                }
+                
                 storage=$.localStorage;
                 
                 if(storage.isSet('pais') ){
