@@ -81,8 +81,13 @@
 		          <div class="form-group">			    
 				    <input type="password" class="form-control" id="contrasena" name="contrasena"
 				           placeholder="Contrase&ntilde;a">
-				  </div>            			  
-		      		      		
+				  </div> 
+
+                            <div class="form-group">
+                                <img id="captcha" src="/securimage/securimage_show.php" alt="CAPTCHA Image" />
+                                <input type="text" name="captcha_code" size="10" maxlength="6" />
+                                <a href="#" onclick="cambiarCaptcha();">[ Cambiar imagen ]</a>
+                            </div>
 			      <div class="form-group">	
 			      	<button type="submit" name="registrarme" class="btn btn-primary">Registrarme</button>
 			      </div>	
@@ -94,7 +99,18 @@
 	</form>
   </div>
   
-  <script type="text/javascript">                  
+  <script type="text/javascript">  
+      cambiarCaptcha();
+      
+      function cambiarCaptcha()
+      {
+          var src = 'securimage/securimage_show.php?' + Math.random();
+                    
+          $('#captcha').attr("src", src);
+          
+          return false;
+      }
+      
       $.ajax({
                 type: 'POST',
                 url: 'php/getPaises.php',                                

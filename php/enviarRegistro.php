@@ -2,6 +2,10 @@
 
 include ('conexion.php');
 
+include_once $_SERVER['DOCUMENT_ROOT'] . '/securimage/securimage.php';
+
+$securimage = new Securimage();
+
 $pais = htmlentities($_POST['pais']);
 $ciudad = htmlentities($_POST['ciudad']);
 $compania = htmlentities($_POST['compania']);
@@ -10,6 +14,11 @@ $contrasena = md5(htmlentities($_POST['contrasena']));
 $telefono = htmlentities($_POST['telefono']);
 $fecha = date("Y-m-d H:i:s");
 
+if ($securimage->check($_POST['captcha_code']) == true) {
+  echo '<div class="alert alert-danger">Codigo de seguridad incorrecto.</div>';
+  
+  exit;
+}
 
 $params = array(':usuarioid' => $correo, ':nombre' => $compania, ':contrasena' => $contrasena, ':fechaRegistro' => $fecha);
      
