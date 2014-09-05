@@ -88,13 +88,12 @@
                                 <input type="text" name="captcha_code" size="10" maxlength="6" />
                                 <a href="#" onclick="cambiarCaptcha();">[ Cambiar imagen ]</a>
                             </div>
+                            <div id="respuesta" style="display: none;"></div>			      			      		          			    
 			      <div class="form-group">	
 			      	<button type="submit" name="registrarme" class="btn btn-primary">Registrarme</button>
 			      </div>	
 			      
-		      	  <a href="iniciar_sesion.php">&iquest;Usuario existente?</a>
-		      	  <br/>		      
-			      <div id="respuesta" style="display: none;"></div>			      			      		          			    
+		      	  <a href="iniciar_sesion.php">&iquest;Usuario existente?</a>		      	  			  
 	          </div>	                       
 	</form>
   </div>

@@ -14,8 +14,8 @@ $contrasena = md5(htmlentities($_POST['contrasena']));
 $telefono = htmlentities($_POST['telefono']);
 $fecha = date("Y-m-d H:i:s");
 
-if ($securimage->check($_POST['captcha_code']) == true) {
-  echo '<div class="alert alert-danger">Codigo de seguridad incorrecto.</div>';
+if ($securimage->check($_POST['captcha_code']) == false) {
+  echo '<div class="alert alert-danger">C&oacute;digo de seguridad incorrecto.</div>';
   
   exit;
 }
